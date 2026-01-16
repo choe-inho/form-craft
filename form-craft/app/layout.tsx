@@ -1,24 +1,25 @@
+'use client'  // 추가
+
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "@/styles/globals.css";
 import SideNavigation from "@/components/common/navigation/SideNavigation";
+import { usePathname } from "next/navigation";
 
 const roboto = Roboto({subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-roboto"}); 
-
-export const metadata: Metadata = {
-  title: "Form Craft",
-  description: "Create and share forms easily",
-};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const hideNavigation = pathname === '/login' || pathname === '/signup';  // 숨길 페이지들
+
   return (
     <html lang="en">
-      <body className={`${roboto.variable} ${roboto.variable} antialiased`}>
-        <SideNavigation/>
+      <body className={`${roboto.variable} antialiased`}>
+        {!hideNavigation && <SideNavigation/>}
         {children}
       </body>
     </html>

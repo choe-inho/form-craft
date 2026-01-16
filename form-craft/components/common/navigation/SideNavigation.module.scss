@@ -8,15 +8,26 @@
     
     height: 100vh;
     padding: 20px 24px;
-
-    background-color: #1f1f1f; 
+    background-color: var(--color-primary);
+    gap: 12px;
 
     &__home{
-        gap: 12px;
         padding: auto;
-    }
+    } 
 
     &__projects{
         gap: 12px; 
+    }
+
+    &__user{
+          margin-top: auto;
+        
+        &__profile{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;  // 동그랗게
+            object-fit: cover;   // 이미지 비율 유지
+            cursor: pointer;
+        }
     }
 } 

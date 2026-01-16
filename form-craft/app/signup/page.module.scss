@@ -1,0 +1,39 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    
+    &__signupBox{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 420px;
+        padding: 48px 40px;
+        gap: 32px;
+
+        background-color: #ffffff;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        border-radius: 16px;
+        
+        &__title{
+            font-size: 36px;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+        }
+    }
+
+    &__signupBox__form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+        gap: 20px;
+    }
+}

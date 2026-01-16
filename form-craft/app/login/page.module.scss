@@ -1,0 +1,39 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    
+    &__loginBox{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 600px;
+        padding: 56px 48px;
+        gap: 36px;
+
+        background-color: #ffffff;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        border-radius: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        
+        &__title{
+            font-size: 32px;
+            font-weight: 700;
+            color: #2d3748;
+            letter-spacing: -0.8px;
+        }
+    }
+
+    &__loginBox__form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+        gap: 20px;
+    }
+}

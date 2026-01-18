@@ -1,15 +1,14 @@
 .container{
     padding: 60px 80px;
     min-height: 100vh;
-    background-color: #ffffff; 
+    background-color: #f5f5f5;
     width: 100%;
     border-radius: 1.5%;
-
     &__header{
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 40px;
+        margin-bottom: 32px;
 
         &__title{
             font-size: 36px;
@@ -24,9 +23,116 @@
         }
     }
 
+    &__categories{
+        display: flex;
+        gap: 8px;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
     &__grid{
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 24px;
+    }
+
+    &__empty{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 100px 40px;
+        text-align: center;
+
+        &__title{
+            font-size: 24px;
+            font-weight: 600;
+            color: #333333;
+            margin-top: 24px;
+            margin-bottom: 8px;
+        }
+
+        &__description{
+            font-size: 16px;
+            color: #666666;
+        }
+    }
+}
+
+.category{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px;
+    background-color: #e5e5e5;
+    border-radius: 8px;
+    transition: all 0.2s;
+
+    &__active{
+        background-color: var(--primary);
+        color: white;
+
+        .category__button{
+            color: white;
+        }
+
+        .category__delete{
+            color: white;
+            opacity: 0.8;
+
+            &:hover{
+                opacity: 1;
+            }
+        }
+    }
+
+    &__button{
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: #333333;
+    }
+
+    &__delete{
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 2px;
+        display: flex;
+        align-items: center;
+        color: #666666;
+        
+        &:hover{
+            color: #ff4444;
+        }
+    }
+
+    &__add{
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    &__addButton{
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        background-color: transparent;
+        border: 2px dashed #cccccc;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: #666666;
+        transition: all 0.2s;
+
+        &:hover{
+            border-color: var(--primary);
+            color: var(--primary);
+        }
     }
 }

@@ -14,14 +14,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  const hideNavigation = pathname === '/login' || pathname === '/signup';  // 숨길 페이지들
+  const hideNavigation = pathname === '/login' || pathname === '/signup' || pathname === '/create';  // 숨길 페이지들
 
   return (
     <html lang="en">
       <body className={`${roboto.variable} antialiased`}>
         {!hideNavigation && <SideNavigation/>}
         {children}
-      </body>
+      </body> 
     </html>
   );
 }

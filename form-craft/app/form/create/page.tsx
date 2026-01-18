@@ -9,12 +9,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   PlusCircle, 
   GripVertical, 
-  Trash2, 
-  ChevronDown,
+  Trash2,
   FileText,
   AlignLeft,
   CheckSquare,
-  Circle
+  Circle,
+  X,
+  Plus
 } from 'lucide-react';
 import {
   Select,
@@ -106,22 +107,81 @@ function CreateForm() {
       s.id === sectionId 
         ? {
             ...s,
-            questions: s.questions.map(q => 
-              q.id === questionId ? { ...q, ...updates } : q
-            )
+            questions: s.questions.map(q => {
+              if (q.id === questionId) {
+                const updatedQuestion = { ...q, ...updates };
+                // 타입이 choice나 checkbox로 변경되면 기본 옵션 추가
+                if ((updates.type === 'choice' || updates.type === 'checkbox') && !updatedQuestion.options) {
+                  updatedQuestion.options = ['옵션 1'];
+                }
+                // 타입이 short나 paragraph로 변경되면 옵션 제거
+                if (updates.type === 'short' || updates.type === 'paragraph') {
+                  delete updatedQuestion.options;
+                }
+                return updatedQuestion;
+              }
+              return q;
+            })
           }
         : s
     ));
   };
 
-  const getQuestionTypeIcon = (type: string) => {
-    switch(type) {
-      case 'short': return <FileText className="w-4 h-4" />;
-      case 'paragraph': return <AlignLeft className="w-4 h-4" />;
-      case 'choice': return <Circle className="w-4 h-4" />;
-      case 'checkbox': return <CheckSquare className="w-4 h-4" />;
-      default: return <FileText className="w-4 h-4" />;
-    }
+  // 옵션 추가
+  const addOption = (sectionId: string, questionId: string) => {
+    setSections(sections.map(s => 
+      s.id === sectionId 
+        ? {
+            ...s,
+            questions: s.questions.map(q => {
+              if (q.id === questionId && q.options) {
+                return {
+                  ...q,
+                  options: [...q.options, `옵션 ${q.options.length + 1}`]
+                };
+              }
+              return q;
+            })
+          }
+        : s
+    ));
+  };
+
+  // 옵션 수정
+  const updateOption = (sectionId: string, questionId: string, optionIndex: number, value: string) => {
+    setSections(sections.map(s => 
+      s.id === sectionId 
+        ? {
+            ...s,
+            questions: s.questions.map(q => {
+              if (q.id === questionId && q.options) {
+                const newOptions = [...q.options];
+                newOptions[optionIndex] = value;
+                return { ...q, options: newOptions };
+              }
+              return q;
+            })
+          }
+        : s
+    ));
+  };
+
+  // 옵션 삭제
+  const deleteOption = (sectionId: string, questionId: string, optionIndex: number) => {
+    setSections(sections.map(s => 
+      s.id === sectionId 
+        ? {
+            ...s,
+            questions: s.questions.map(q => {
+              if (q.id === questionId && q.options && q.options.length > 1) {
+                const newOptions = q.options.filter((_, idx) => idx !== optionIndex);
+                return { ...q, options: newOptions };
+              }
+              return q;
+            })
+          }
+        : s
+    ));
   };
 
   return (
@@ -157,7 +217,7 @@ function CreateForm() {
         </Card>
 
         {/* 섹션들 */}
-        {sections.map((section, sectionIndex) => (
+        {sections.map((section) => (
           <div key={section.id} className={styles.section}>
             <Card>
               <CardHeader className="pb-4">
@@ -206,19 +266,46 @@ function CreateForm() {
                           {question.type === 'short' && (
                             <Input disabled placeholder="단답형 텍스트" className="bg-gray-50" />
                           )}
+                          
                           {question.type === 'paragraph' && (
                             <Textarea disabled placeholder="장문형 텍스트" rows={3} className="bg-gray-50" />
                           )}
-                          {question.type === 'choice' && (
+                          
+                          {(question.type === 'choice' || question.type === 'checkbox') && (
                             <div className="space-y-2">
-                              <div className="flex items-center gap-2">
-                                <Circle className="w-4 h-4 text-gray-400" />
-                                <span className="text-sm text-gray-500">옵션 1</span>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <Circle className="w-4 h-4 text-gray-400" />
-                                <span className="text-sm text-gray-500">옵션 2</span>
-                              </div>
+                              {question.options?.map((option, optionIndex) => (
+                                <div key={optionIndex} className="flex items-center gap-2">
+                                  {question.type === 'choice' ? (
+                                    <Circle className="w-4 h-4 text-gray-400" />
+                                  ) : (
+                                    <CheckSquare className="w-4 h-4 text-gray-400" />
+                                  )}
+                                  <Input
+                                    value={option}
+                                    onChange={(e) => updateOption(section.id, question.id, optionIndex, e.target.value)}
+                                    placeholder={`옵션 ${optionIndex + 1}`}
+                                    className="flex-1"
+                                  />
+                                  {question.options && question.options.length > 1 && (
+                                    <Button
+                                      variant="ghost"
+                                      size="icon-sm"
+                                      onClick={() => deleteOption(section.id, question.id, optionIndex)}
+                                    >
+                                      <X className="w-4 h-4 text-gray-400 hover:text-red-500" />
+                                    </Button>
+                                  )}
+                                </div>
+                              ))}
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => addOption(section.id, question.id)}
+                                className="text-primary"
+                              >
+                                <Plus className="w-4 h-4" />
+                                옵션 추가
+                              </Button>
                             </div>
                           )}
 
